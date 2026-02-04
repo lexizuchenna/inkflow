@@ -1,0 +1,52 @@
+1. The Visual Hierarchy (Top-to-Bottom)
+Section	Component Name	Function
+Reading Indicator	ReadingProgressBar	A thin, sticky bar at the very top that fills as the user scrolls.
+Hero / Title Section	ArticleHeader	Large Title, Category, Author Bio, Post Date, and Estimated Read Time.
+Main Layout	ArticleLayout	A 2-column layout (Desktop: 75% content, 25% sidebar / Mobile: 100% content).
+Interactive Sidebar	StickyTools	Floating Share buttons, Like/Applause button, and a dynamic Table of Contents.
+The Core Content	ProseContent	The actual article body using high-end typography (Tailwind Typography).
+Author Footer	AuthorBioCard	A detailed section about the writer with a "Follow" button.
+Social Proof	CommentSection	An interactive area for readers to leave thoughts (using Clerk for identity).
+Recirculation	RelatedArticles	"What to read next" based on the current post's tags.
+2. The Detailed Reading Flows
+A. The "Engagement" Flow (Sticky)
+
+As the user scrolls, a sidebar or a bottom bar (on mobile) should remain visible. This allows the user to:
+
+    Applause/Like: Quick validation of the content.
+
+    Save/Bookmark: Add to their personal "Reading List."
+
+    Share: Quick links to Twitter/X, LinkedIn, and Copy Link.
+
+B. The "Navigation" Flow (Table of Contents)
+
+For long-form articles (1000+ words), a Table of Contents (ToC) is essential for SEO and UX.
+
+    It should automatically detect H2 and H3 tags in the article.
+
+    It should highlight which section the reader is currently in as they scroll.
+
+C. The "Reader Experience" Flow (Customization)
+
+Professional blogs often allow readers to customize their environment.
+
+    Font Size Toggler: (A- / A+) to help users with visual impairments.
+
+    Theme Switcher: Quick access to Light/Dark mode specifically for reading.
+
+D. The "Next Step" Flow (Retention)
+
+Once the article ends, the "End of Page" should never be a dead end:
+
+    Newsletter Signup: A subtle inline form ("Liked this? Join our weekly digest").
+
+    Next/Previous Post: Simple navigation to the next chronological post.
+
+3. Unique "Professional" Features for InkFlow
+
+    Selection Highlighting: When a user highlights text, a small "Share this quote" tooltip appears.
+
+    Drop Caps: The first letter of the article is large and stylized (Classic Editorial look).
+
+    Inline Callouts: Beautifully styled "Note," "Quote," or "Tip" boxes within the text.

@@ -1,0 +1,43 @@
+1. The Global Search & Command Center
+
+This is the most important component. It shouldn't just be a small input; it should be a focal point.
+
+    Live Search Bar: A large, centered search input with "Type-to-search" functionality.
+
+    Search Suggestions: As a user types, it should show matching articles, authors, and tags in a dropdown.
+
+    Recent Searches: A section showing the user's last 3-5 searches to improve UX.
+
+2. Advanced Filtering System
+
+Unlike the homepage category bar, this should allow for multiple layers of filtering.
+
+    Multi-Select Tags: Filters for topics (e.g., Tech + Design).
+
+    Sort By: Options for "Newest," "Most Viewed," and "Highest Rated."
+
+    Time Range: Filtering content by "Today," "This Week," or "All Time."
+
+3. "The Big Grid" (Infinite Scroll)
+
+This is the main content area.
+
+    Dynamic Masonry Grid: Unlike the structured Bento grid on the home page, use a Masonry layout (like Pinterest) where cards can have different heights depending on image aspect ratios.
+
+    Infinite Scroll / Load More: Professional blogs avoid pagination (1, 2, 3...) in favor of seamless loading to keep users engaged.
+
+4. Trending "Spark" Section
+
+A horizontal reel showing what is being read right now.
+
+    Real-time Indicator: A small "Live" pulsing dot next to articles with high current traffic.
+
+    Topic Clusters: Small groups of articles related to a single "Breaking" news item.
+
+5. Unique "Professional" Features
+
+    "Surprise Me" Button: A button that takes the user to a random high-quality article (increases time-on-site).
+
+    Empty State Illustrations: If no results are found, show a beautiful "No results found" graphic with suggestions on what to search for instead.
+
+    Skeleton Loaders: While the data is fetching from Supabase, show shimmering "skeletons" of the cards to make the site feel faster.

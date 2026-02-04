@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* Brand Colors */
+  --color-paper-50: #fcfbf7; /* Primary Light BG */
+  --color-paper-100: #f1ede1; /* Secondary Light BG (Darker than 50) */
+  --color-paper-200: #e5e1d5;
+
+  --color-ink-900: #12141c; /* Primary Dark BG (Softer than black) */
+  --color-ink-800: #1e212a; /* Secondary Dark BG (Lighter than 900) */
+  --color-ink-700: #2d3139;
+
+  --color-accent-primary: #d97706;
+
+  /* Semantic Variables - Base */
+  --color-bg-primary: var(--color-paper-50);
+  --color-bg-secondary: var(--color-paper-100);
+
+  --color-text-primary: var(--color-ink-900);
+  --color-text-secondary: rgba(15, 17, 21, 0.6); /* Muted ink */
+
+  --color-border: var(--color-paper-200);
+
+  /* Fonts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-serif: var(--font-playfair), serif;
+}
+
+@layer base {
+  :root {
+    --color-bg-primary: var(--color-paper-50);
+    --color-bg-secondary: var(--color-paper-100);
+    --color-text-primary: var(--color-ink-900);
+    --color-text-secondary: #5a5d63; /* Accessible secondary text */
+    --color-border: #e8e4d8;
+  }
+
+  .dark {
+    --color-bg-primary: var(--color-ink-900);
+    --color-bg-secondary: var(--color-ink-800);
+
+    --color-text-primary: #f5f2ea;
+    --color-text-secondary: #9ca3af;
+    --color-border: #2d3139;
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    @apply transition-colors duration-300 antialiased;
+  }
+}
+
+@layer components {
+  /* Applying the new text variables to your prose */
+  .prose-inkflow {
+    & p {
+      @apply !leading-[1.8] text-[var(--color-text-secondary)];
+    }
+
+    & h2,
+    & h3 {
+      @apply !font-serif text-[var(--color-text-primary)];
+      @apply !mt-16 !mb-8 !scroll-mt-32;
+    }
+
+    & h2 {
+      @apply !text-3xl md:!text-4xl !border-b border-[var(--color-border)] !pb-2;
+    }
+
+    & blockquote {
+      @apply !border-l-4 !border-accent-primary;
+      @apply !bg-accent-primary/5 !px-6 !py-2 !italic !font-serif !text-2xl;
+      @apply !rounded-r-2xl !my-12 text-[var(--color-text-primary)];
+    }
+
+    /* Utility for cards using the secondary background */
+    .card-surface {
+      background-color: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      @apply rounded-3xl p-6 transition-all;
+    }
+  }
+}
