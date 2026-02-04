@@ -1,4 +1,3 @@
-// src/components/home/TopAuthors.tsx
 import Image from "next/image";
 
 export default function TopAuthors({ authors }: { authors: Array<IUser> }) {

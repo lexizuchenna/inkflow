@@ -78,11 +78,13 @@ declare global {
     related_posts: Array<Story>;
   }
 
-  type IUser = Pick<
-    User,
-    "display_name" | "username" | "avatar_url" | "role",
-    "bio"
-  >;
+  interface IUser {
+    display_name: string;
+    username: string;
+    avatar_url?: string;
+    role: string;
+    bio?: string;
+  }
 
   interface GetHomeDataRes {
     featured: Story;

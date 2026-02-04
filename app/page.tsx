@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import { AppException } from "@/exceptions";
 import { api } from "@/lib/axios";
 
@@ -8,7 +10,7 @@ import JoinCommunity from "@/components/home/join-community";
 import SeriesRow from "@/components/home/series-row";
 import TopAuthors from "@/components/home/top-authors";
 import { InternalServerError } from "@/components/shared/error";
-import { Metadata } from "next";
+import { Suspense } from "react";
 
 const ogUrl = `${process.env.NEXT_PUBLIC_API_URL}/og?title=${encodeURIComponent(
   "InnFlow"
@@ -48,12 +50,11 @@ export default async function Home() {
 
       return res.data.data;
     } catch (error: any) {
-      return {
-        name: "UNKNOWN_ERROR",
-        statusCode: error.statusCode ?? 500,
-        error: error.error ?? "UNKNOWN_ERROR",
-        message: error.message ?? "Somthing went wrong, try again",
-      };
+      return new AppException(
+        error.message ?? "Something went wrong",
+        error.statusCode ?? 500,
+        error.error ?? "UNKNOWN_ERROR"
+      );
     }
   }
 
@@ -68,6 +69,8 @@ export default async function Home() {
   }
 
   const [data, cateories] = await Promise.all([getData(), getCategories()]);
+
+  console.log("error-m: ", data instanceof AppException);
 
   if (data instanceof AppException) return <InternalServerError error={data} />;
 
@@ -110,7 +113,9 @@ export default async function Home() {
         top_stories={top_stories}
         trending_stories={trending_stories}
       />
-      <JoinCommunity />
+      <Suspense>
+        <JoinCommunity />
+      </Suspense>
       <TopAuthors authors={top_authors} />
       <SeriesRow />
     </div>
