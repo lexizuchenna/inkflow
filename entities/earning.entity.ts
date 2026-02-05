@@ -16,7 +16,7 @@ export enum EarningSource {
   PRO_REFERRAL = "pro_referral",
 }
 
-@Entity("earnings")
+@Entity({ name: "earnings" })
 export class Earning {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

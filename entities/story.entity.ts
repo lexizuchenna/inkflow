@@ -8,7 +8,6 @@ import {
   JoinColumn,
   Index,
 } from "typeorm";
-import { User } from "./user.entity";
 
 export enum StoryStatus {
   DRAFT = "draft",
@@ -47,7 +46,6 @@ export class Story {
   })
   status!: StoryStatus;
 
-  // ANALYTICS & METRICS
   @Column({ name: "view_count", type: "int", default: 0 })
   view_count!: number;
 
@@ -66,14 +64,13 @@ export class Story {
   })
   completion_rate!: number;
 
-  @ManyToOne(() => User, (user) => user.stories, { onDelete: "CASCADE" })
+  @ManyToOne("User", "stories", { onDelete: "CASCADE" })
   @JoinColumn({ name: "author_id" })
-  author!: User;
+  author!: any;
 
   @Column({ name: "author_id" })
   author_id!: string;
 
-  // SERIES INTEGRATION
   @ManyToOne("Series", "stories", {
     nullable: true,
     onDelete: "SET NULL",
@@ -87,7 +84,6 @@ export class Story {
   @Column({ name: "order_in_series", type: "int", nullable: true })
   order_in_series!: number;
 
-  // METADATA
   @Column({ type: "jsonb", nullable: true })
   tags!: string[];
 

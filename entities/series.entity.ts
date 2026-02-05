@@ -9,10 +9,8 @@ import {
   JoinColumn,
   Index,
 } from "typeorm";
-import { User } from "./user.entity";
-import { Story } from "./story.entity";
 
-@Entity("series")
+@Entity({ name: "series" })
 export class Series {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -33,20 +31,18 @@ export class Series {
   @Column({ name: "is_completed", type: "boolean", default: false })
   is_completed!: boolean;
 
-  // ANALYTICS
   @Column({ name: "view_count", type: "int", default: 0 })
   view_count!: number;
 
-  // RELATIONSHIPS
-  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE" })
+  @ManyToOne("User", "id", { onDelete: "CASCADE" })
   @JoinColumn({ name: "author_id" })
-  author!: User;
+  author!: any;
 
   @Column({ name: "author_id" })
   author_id!: string;
 
-  @OneToMany(() => Story, (story) => story.series)
-  stories!: Story[];
+  @OneToMany("Story", "series")
+  stories!: any[];
 
   @CreateDateColumn({ name: "created_at" })
   created_at!: Date;

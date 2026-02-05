@@ -12,8 +12,8 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/api/home(.*)",
   "/api/categories(.*)",
-  "/api/stories/:path*",
   "/api/stories(.*)",
+  "/api/stories/:path*",
   "/api/og(.*)",
   "/api/newsletter(.*)",
 ]);

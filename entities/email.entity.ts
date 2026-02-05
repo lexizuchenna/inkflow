@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
-@Entity("emails")
+@Entity({ name: "emails" })
 export class Email {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
