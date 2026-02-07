@@ -15,7 +15,7 @@ export enum StoryStatus {
   ARCHIVED = "archived",
 }
 
-@Entity("stories")
+@Entity({ name: "stories" })
 export class Story {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

@@ -76,11 +76,11 @@ export default function StoryCard({
 
   return (
     <React.Fragment>
-      <div className="group relative flex flex-col md:flex-row md:items-center justify-between p-5 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border border-border bg-white dark:bg-foreground/[0.03] shadow-sm hover:shadow-xl hover:border-accent-primary/30 hover:bg-slate-50 dark:hover:bg-foreground/[0.06] transition-all duration-500 cursor-pointer overflow-hidden">
+      <div className="group relative flex flex-col md:flex-row md:items-center justify-between p-5 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border border-border bg-white dark:bg-bg-secondary/[0.03] shadow-sm hover:shadow-xl hover:border-accent-primary/30 hover:bg-slate-50 dark:hover:bg-bg-primary/[0.06] transition-all duration-500 cursor-pointer overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent-primary scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-500" />
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6">
-          <div className="relative h-20 w-20 shrink-0 rounded-2xl bg-foreground/5 border border-border overflow-hidden shadow-inner">
+          <div className="relative h-20 w-20 shrink-0 rounded-2xl bg-bg-secondary/5 border border-border overflow-hidden shadow-inner">
             <div className="absolute inset-0 bg-gradient-to-tr from-accent-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div
               className="w-full h-full bg-cover bg-center"
@@ -128,7 +128,7 @@ export default function StoryCard({
           <Link
             href={`/edit/${story.slug}`}
             title="Edit Story"
-            className="p-3 md:p-2.5 text-foreground/50 hover:text-foreground dark:hover:text-white hover:bg-foreground/10 rounded-xl transition-all cursor-pointer"
+            className="p-3 md:p-2.5 text-foreground/50 hover:text-foreground dark:hover:text-white hover:bg-bg-secondary/10 rounded-xl transition-all cursor-pointer"
           >
             <Edit3 size={18} />
           </Link>

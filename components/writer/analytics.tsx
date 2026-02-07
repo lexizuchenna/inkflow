@@ -44,7 +44,7 @@ export default function Analytics() {
         ].map((stat) => (
           <div
             key={stat.label}
-            className="group relative p-8 bg-foreground/[0.02] border border-border rounded-[2.5rem] transition-all duration-500 hover:bg-foreground/[0.04] hover:border-accent-primary/20 cursor-pointer overflow-hidden"
+            className="group relative p-8 bg-bg-secondary/[0.02] border border-border rounded-[2.5rem] transition-all duration-500 hover:bg-bg-secondary/[0.04] hover:border-accent-primary/20 cursor-pointer overflow-hidden"
           >
             {/* Decorative Glow - Appears on Hover */}
             <div className="absolute -right-4 -top-4 h-24 w-24 bg-accent-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />

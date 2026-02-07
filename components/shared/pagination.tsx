@@ -73,8 +73,8 @@ export default function Pagination({
               className={cn(
                 "w-10 h-10 rounded-xl text-xs font-bold transition-all cursor-pointer",
                 current_page === page
-                  ? "bg-foreground text-background shadow-lg scale-110 z-10"
-                  : "text-foreground/40 hover:text-foreground hover:bg-foreground/5"
+                  ? "bg-bg-secondary text-background shadow-lg scale-110 z-10"
+                  : "text-text-primary/40 hover:text-foreground hover:bg-bg-secondary/5"
               )}
             >
               {page}

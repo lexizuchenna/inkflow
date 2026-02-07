@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import path from "path";
 import { DataSource } from "typeorm";
 
 import { Series, Story, User, Earning, Payment, Email } from "@/entities";
@@ -9,6 +10,7 @@ export const AppDataSource = new DataSource({
   synchronize: process.env.NODE_ENV === "development",
   logging: false,
   entities: [User, Story, Series, Earning, Payment, Email],
+  // entities: [path.join(__dirname, "../entities/**/*.{ts,js}")],
   migrations: [],
   subscribers: [],
   ssl: {

@@ -120,7 +120,7 @@ const ActionModal = forwardRef(
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => !loading && setIsOpen(false)}
-          className="absolute inset-0 bg-background/80"
+          className="absolute inset-0 bg-bg-secondary/80"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -131,7 +131,7 @@ const ActionModal = forwardRef(
             transition: { type: "spring", damping: 25, stiffness: 400 },
           }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-lg bg-background border border-border rounded-[2.5rem] overflow-hidden shadow-2xl"
+          className="relative w-full max-w-lg bg-bg-secondary border border-border rounded-[2.5rem] overflow-hidden shadow-2xl"
         >
           <div className="p-8 sm:p-10">
             <div className="flex flex-col items-center text-center mb-8">
@@ -166,7 +166,7 @@ const ActionModal = forwardRef(
                       type={field.type || "text"}
                       placeholder={field.placeholder}
                       className={cn(
-                        "w-full bg-foreground/[0.03] border border-border rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent-primary/20 transition-all",
+                        "w-full bg-bg-primary/[0.03] border border-border rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent-primary/20 transition-all",
                         errors[field.name] &&
                           "border-red-500/50 bg-red-500/[0.02]"
                       )}
@@ -191,7 +191,7 @@ const ActionModal = forwardRef(
               <button
                 disabled={loading}
                 onClick={() => setIsOpen(false)}
-                className="flex-1 px-8 py-4 rounded-2xl bg-foreground/5 text-foreground/60 font-bold hover:bg-foreground/10 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="flex-1 px-8 py-4 rounded-2xl bg-bg-primary/5 text-text-primary/60 font-bold hover:bg-bg-primary/10 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 Cancel
               </button>

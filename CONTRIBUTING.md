@@ -54,7 +54,7 @@ We use **TypeORM** with **PostgreSQL**. If you are adding new features that requ
 
 ### Tech Stack Standards
 
-- **Next.js 15:** Use the `app/` directory and Server Components by default. Use `"use client"` only when browser interactivity is required.
+- **Next.js 16:** Use the `app/` directory and Server Components by default. Use `"use client"` only when browser interactivity is required.
 - **Styling:** Use Tailwind CSS variables defined in `@theme` to ensure consistency with the InkFlow editorial brand (Paper/Ink colors).
 - **Icons:** Use `lucide-react`.
 

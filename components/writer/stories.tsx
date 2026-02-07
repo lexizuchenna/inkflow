@@ -19,6 +19,7 @@ type FilterStatus = "all" | "draft" | "published" | "archived";
 
 export default function Stories() {
   const [currentPage, setCurrentPage] = useState(1);
+
   const [filter, setFilter] = useState<FilterStatus>("all");
   const [dateFilter, setDateFilter] = useState<undefined | Date>(undefined);
 
@@ -43,11 +44,9 @@ export default function Stories() {
             >
               {b === "all" ? "all stories" : b}
               <span className="ml-1 text-foreground/30 text-[10px]">
-                {
-                  data?.stories.filter((s) =>
-                    b === "all" ? s : s.status === b
-                  ).length
-                }
+                {b === "all"
+                  ? data?.pagination?.total_items
+                  : data?.stories.filter((s) => s.status === b).length}
               </span>
             </button>
           ))}

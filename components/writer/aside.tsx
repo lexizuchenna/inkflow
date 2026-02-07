@@ -69,16 +69,16 @@ export default function Aside() {
                     className={cn(
                       "w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 group cursor-pointer",
                       isActive
-                        ? "bg-foreground text-background shadow-xl shadow-foreground/5"
-                        : "text-foreground/50 hover:text-white hover:bg-foreground/5"
+                        ? "bg-bg-secondary text-background shadow-xl shadow-bg-secondary/5"
+                        : "text-text-secondary/50 hover:text-white hover:bg-bg-secondary/5"
                     )}
                   >
                     <div className="flex items-center gap-3">
                       <span
                         className={cn(
                           isActive
-                            ? "text-background"
-                            : "text-foreground/30 group-hover:text-accent-primary"
+                            ? "text-text-secondary"
+                            : "text-text-primary/30 group-hover:text-accent-primary"
                         )}
                       >
                         <item.icon size={18} />
@@ -137,21 +137,21 @@ export default function Aside() {
     <>
       <div
         className={cn(
-          "fixed inset-0 z-[105] bg-background/80 backdrop-blur-sm transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-[105] bg-bg-primary/80 backdrop-blur-sm transition-opacity duration-300 md:hidden",
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={toggleSidebar}
       />
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-[110] w-72 bg-background border-r border-border p-6 flex flex-col transition-transform duration-300 ease-in-out md:hidden",
+          "fixed inset-y-0 left-0 z-[110] w-72 bg-bg-secondary border-r border-border p-6 flex flex-col transition-transform duration-300 ease-in-out md:hidden",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <SidebarContent />
       </div>
 
-      <aside className="hidden md:flex w-72 border-r border-border bg-foreground/[0.01] p-6 flex-col h-screen sticky top-0">
+      <aside className="hidden md:flex w-72 border-r border-border bg-bg-secondary/[0.01] p-6 flex-col h-screen sticky top-0">
         <SidebarContent />
       </aside>
 
@@ -160,7 +160,7 @@ export default function Aside() {
         <div className="md:hidden fixed bottom-6 right-6 z-[110]">
           <button
             onClick={toggleSidebar}
-            className="p-4 bg-foreground text-background rounded-full shadow-2xl border border-white/10 active:scale-90 transition-transform"
+            className="p-4 bg-bg-secondary text-text-secondary rounded-full shadow-2xl border border-white/10 active:scale-90 transition-transform"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

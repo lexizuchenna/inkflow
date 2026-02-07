@@ -40,6 +40,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: ["typeorm"],
+  experimental: {
+    serverMinification: false,
+  },
+  turbopack: {
+    resolveAlias: {
+      "@/entities": "./entities",
+    },
+  },
 };
 
 export default nextConfig;

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "next-themes";

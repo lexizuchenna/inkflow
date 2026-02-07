@@ -21,7 +21,7 @@ export default function RecentStories() {
             Recent Stories
           </h3>
           <span className="px-2 py-0.5 rounded-md bg-foreground/5 text-[9px] font-bold text-foreground/40 uppercase tracking-tighter">
-            {data?.stories.length || 0} Total
+            {data?.pagination?.total_items || 0} Total
           </span>
         </div>
         <button className="text-[10px] font-bold uppercase tracking-widest text-accent-primary hover:text-white transition-colors cursor-pointer flex items-center gap-2 group">

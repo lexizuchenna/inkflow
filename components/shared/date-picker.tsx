@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, Filter, X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import * as Popover from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
 
 import "react-day-picker/dist/style.css";
+
+import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
   date?: Date;
@@ -27,7 +27,7 @@ export default function UniversalDatePicker({
       <Popover.Trigger asChild>
         <button
           className={cn(
-            "flex items-center gap-2 px-4 py-2 bg-foreground/5 border border-border rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer outline-none group",
+            "flex items-center gap-2 px-4 py-2 bg-bg-secondary/5 border border-border rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer outline-none group",
             date
               ? "text-white border-white/40 bg-white/5"
               : "text-foreground/60 hover:text-white hover:border-border/80",
@@ -57,7 +57,7 @@ export default function UniversalDatePicker({
         <Popover.Content
           align="start"
           sideOffset={8}
-          className="z-[160] bg-background border border-border p-4 rounded-[2rem] shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+          className="z-[160] bg-bg-primary border border-border p-4 rounded-[2rem] shadow-2xl animate-in fade-in zoom-in-95 duration-200"
         >
           <style>{`
             .rdp { --rdp-accent-color: var(--accent-primary); --rdp-background-color: rgba(255,255,255,0.05); margin: 0; }

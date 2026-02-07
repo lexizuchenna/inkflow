@@ -13,7 +13,7 @@ export const useUser = () =>
 export const useStories = (page = 1) =>
   useQuery({
     queryKey: ["user-stories", page],
-    queryFn: async () => storyService.getStories(),
+    queryFn: async () => storyService.getStories(page),
     retry: 1,
   });
 
