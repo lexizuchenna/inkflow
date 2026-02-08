@@ -43,7 +43,7 @@ export async function generateMetadata({
   const ogUrl = `${
     process.env.NEXT_PUBLIC_API_URL
   }/og?title=${encodeURIComponent(story.title)}&author=${encodeURIComponent(
-    story.author?.display_name || ""
+    story.author.display_name
   )}`;
 
   return {
@@ -157,7 +157,7 @@ export default async function ArticlePage({
               />
             </div>
 
-            <ArticleBody content={assignHeadingIds(story.content)} />
+            <ArticleBody content={await assignHeadingIds(story.content)} />
 
             <AuthorBio author={story.author} />
 

@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // transpilePackages: ["jsdom", "html-encoding-sniffer", "@exodus/bytes"],
   images: {
     remotePatterns: [
       {

@@ -1,5 +1,5 @@
 import slugify from "slugify";
-import { JSDOM } from "jsdom";
+// import { JSDOM } from "jsdom";
 import { stories_status_enum } from "@/app/generated/prisma/enums";
 
 export const validateStoryData = (data: any) => {
@@ -55,10 +55,11 @@ const generateSlug = (text: string): string => {
     .substring(0, 200);
 };
 
-export const assignHeadingIds = (content: string): string => {
+export const assignHeadingIds = async (content: string): Promise<string> => {
   let doc: Document;
 
   if (typeof window === "undefined") {
+    const { JSDOM } = await import("jsdom");
     doc = new JSDOM(content).window.document;
   } else {
     const parser = new DOMParser();

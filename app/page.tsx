@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -23,11 +25,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "InkFlow | Professional Publishing Engine",
     description: "The home for professional writers and avid readers.",
-    url: "https://inkflow.com",
+    url: process.env.NEXT_PUBLIC_APP_URL,
     siteName: "InkFlow",
     images: [
       {
-        url: ogUrl, // Use the dynamic OG route we discussed earlier
+        url: ogUrl,
         width: 1200,
         height: 630,
         alt: "InkFlow Homepage",
@@ -64,6 +66,7 @@ export default async function Home() {
 
       return data.data;
     } catch (error) {
+      console.log("cat error: ", error);
       return [];
     }
   }
@@ -80,7 +83,7 @@ export default async function Home() {
       {
         "@type": "WebSite",
         name: "InkFlow",
-        url: `"${process.env.NEXT_PUBLIC_APP_URL}"`,
+        url: process.env.NEXT_PUBLIC_APP_URL,
         potentialAction: {
           "@type": "SearchAction",
           target: `"${process.env.NEXT_PUBLIC_APP_URL}/explore?q={search_term_string}"`,
@@ -90,7 +93,7 @@ export default async function Home() {
       {
         "@type": "Organization",
         name: "InkFlow",
-        url: `"${process.env.NEXT_PUBLIC_APP_URL}"`,
+        url: process.env.NEXT_PUBLIC_APP_URL,
         logo: `"${process.env.NEXT_PUBLIC_APP_URL}/logo.png"`,
         // "sameAs": [
         //   "https://twitter.com/inkflow",
