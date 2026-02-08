@@ -7,7 +7,7 @@ interface ArticleHeaderProps {
   category: string;
   author: {
     display_name: string;
-    avatar_url?: string;
+    avatar_url?: string | null;
     role: string;
   };
   created_at: string | Date;

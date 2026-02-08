@@ -1,4 +1,3 @@
-// src/components/explore/SearchCommandCenter.tsx
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -13,7 +12,6 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-// Mock Data for demonstration
 const RECENT_SEARCHES = ["Next.js 15", "Minimalist Design", "Lagos Startups"];
 
 export default function SearchCommandCenter() {

@@ -43,7 +43,7 @@ export async function generateMetadata({
   const ogUrl = `${
     process.env.NEXT_PUBLIC_API_URL
   }/og?title=${encodeURIComponent(story.title)}&author=${encodeURIComponent(
-    story.author.display_name
+    story.author?.display_name || ""
   )}`;
 
   return {

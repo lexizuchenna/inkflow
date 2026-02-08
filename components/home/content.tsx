@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { TrendingUp, ArrowRight } from "lucide-react";
 
-import { Story } from "@/entities";
+import { stories } from "@/app/generated/prisma/client";
 
 interface HomeContentProps {
-  top_stories: Array<Story>;
-  trending_stories: Array<Story>;
+  top_stories: Array<stories>;
+  trending_stories: Array<stories>;
 }
 
 interface TopPostProps {

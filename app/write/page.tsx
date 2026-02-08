@@ -13,14 +13,15 @@ import { useAlert } from "@/providers/alert";
 import { useRouter } from "next/navigation";
 import CategorySearch from "@/components/write/category";
 import Tags from "@/components/write/tags";
+import { stories } from "../generated/prisma/client";
 
 export interface BlogPostForm {
   title: string;
   content: string;
   category: string;
   featured_image: string;
-  tags: string[];
-  series_id?: string;
+  tags: stories["tags"];
+  series_id?: stories["series_id"];
 }
 
 export default function WritePage() {

@@ -7,7 +7,7 @@ import StoryCard from "./story-card";
 import { ErrorState } from "../shared/error";
 import StoryItemSkeleton from "./skeleton/story";
 import EmptyStoryState from "./empty-story";
-import Pagination from "../shared/pagination";
+import { Pagination } from "../shared";
 
 import UniversalDatePicker from "../shared/date-picker";
 import { cn } from "@/lib/utils";

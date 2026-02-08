@@ -14,20 +14,6 @@ class UserService {
     const response = await this.api.get<ApiResponse<UserType>>("/user/me");
     return response.data.data;
   }
-
-  //   public async updateUsername(username: string): Promise<ApiResponse<User>> {
-  //     try {
-  //       const { data } = await this.api.patch<ApiResponse<User>>(
-  //         "/user/update-username",
-  //         {
-  //           username,
-  //         }
-  //       );
-  //       return data;
-  //     } catch (error) {
-  //       throw this.handleError(error);
-  //     }
-  //   }
 }
 
 export const userService = new UserService(api);

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Email } from "@/entities/email.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 
@@ -21,21 +20,14 @@ export const GET = withErrorHandling(async (req: Request) => {
     const decoded = jwt.verify(token, JWT_SECRET) as { email: string };
     const email = decoded.email;
 
-    await initializeDatabase();
-    const emailRepo = AppDataSource.getRepository(Email);
-
-    let subscriber = await emailRepo.findOne({ where: { email } });
-
-    if (subscriber) {
-      subscriber.is_subscribed = true;
-    } else {
-      subscriber = emailRepo.create({
+    await prisma.emails.upsert({
+      where: { email },
+      update: { is_subscribed: true },
+      create: {
         email,
         is_subscribed: true,
-      });
-    }
-
-    await emailRepo.save(subscriber);
+      },
+    });
 
     return NextResponse.redirect(
       `${NEXT_PUBLIC_APP_URL}/?success=true&msg=email_verified`

@@ -1,27 +1,31 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Story, StoryStatus } from "@/entities/story.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
 import slugify from "slugify";
 
 export const GET = withErrorHandling(async () => {
-  await initializeDatabase();
-  const storyRepo = AppDataSource.getRepository(Story);
-
-  const categories = await storyRepo
-    .createQueryBuilder("story")
-    .select("story.category", "name")
-    .addSelect("COUNT(story.id)", "postCount")
-    .where("story.status = :status", { status: StoryStatus.PUBLISHED })
-    .andWhere("story.category IS NOT NULL")
-    .groupBy("story.category")
-    .orderBy("COUNT(story.id)", "DESC")
-    .getRawMany();
+  const categories = await prisma.stories.groupBy({
+    by: ["category"],
+    where: {
+      status: "published",
+      category: {
+        not: "",
+      },
+    },
+    _count: {
+      id: true,
+    },
+    orderBy: {
+      _count: {
+        id: "desc",
+      },
+    },
+  });
 
   const formattedCategories = categories.map((cat) => ({
-    name: cat.name,
-    count: parseInt(cat.postCount, 10),
-    slug: slugify(cat.name),
+    name: cat.category,
+    count: cat._count.id,
+    slug: slugify(cat.category),
   }));
 
   return NextResponse.json({

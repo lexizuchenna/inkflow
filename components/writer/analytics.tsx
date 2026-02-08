@@ -3,9 +3,12 @@
 import { useUser } from "@/hooks/user";
 import { cn } from "@/lib/utils";
 import StatCardSkeleton from "./skeleton/stat-card";
+import { ErrorState } from "../shared/error";
 
 export default function Analytics() {
-  const { isPending, data } = useUser();
+  const { isPending, data, isError, error, refetch } = useUser();
+
+  if (isError) return <ErrorState error={error} onRetry={refetch} />;
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {isPending || !data ? (

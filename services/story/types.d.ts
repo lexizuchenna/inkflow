@@ -1,3 +1,5 @@
+import { stories } from "@/app/generated/prisma/client";
+
 export interface UploadImageRequest {
   image: File;
 }
@@ -10,7 +12,7 @@ export interface UploadImageResponse {
 export interface SaveStoryRequest {
   title: string;
   featured_image: string;
-  tags: Array<string>;
+  tags: Array<string> | stories["tags"];
   status: "published" | "draft" | "archived";
   content: string;
   category: string;

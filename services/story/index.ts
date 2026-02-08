@@ -1,11 +1,12 @@
 import { AxiosInstance } from "axios";
+
 import { api } from "@/lib/axios";
 import {
   SaveStoryRequest,
   UploadImageRequest,
   UploadImageResponse,
 } from "./types";
-import { Story } from "@/entities";
+import { stories } from "@/app/generated/prisma/client";
 
 class StoryService {
   private api: AxiosInstance;
@@ -33,7 +34,7 @@ class StoryService {
   }
 
   public async saveStory(data: SaveStoryRequest) {
-    const response = await this.api.post<ApiResponse<Story>>(
+    const response = await this.api.post<ApiResponse<stories>>(
       this.routes.save,
       data
     );
@@ -41,21 +42,21 @@ class StoryService {
   }
 
   public async getStories(page = 1) {
-    const response = await this.api.get<ApiResponse<Array<Story>, Pagination>>(
-      `${this.routes.get}?page=${page}`
-    );
+    const response = await this.api.get<
+      ApiResponse<Array<stories>, Pagination>
+    >(`${this.routes.get}?page=${page}`);
     return { stories: response.data.data, pagination: response.data.meta };
   }
 
   public async getStory(slug: string) {
     const route = this.routes.getOne.replace(":slug", slug);
-    const response = await this.api.get<ApiResponse<Story>>(route);
+    const response = await this.api.get<ApiResponse<stories>>(route);
     return { ...response.data.data };
   }
 
   public async updateStory(slug: string, data: SaveStoryRequest) {
     const route = this.routes.getOne.replace(":slug", slug);
-    const response = await this.api.patch<ApiResponse<Story>>(route, data);
+    const response = await this.api.patch<ApiResponse<stories>>(route, data);
     return { ...response.data.data };
   }
 

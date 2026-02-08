@@ -1,14 +1,8 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Story, StoryStatus } from "@/entities/story.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
-import {
-  In,
-  MoreThanOrEqual,
-  FindOptionsOrder,
-  FindOptionsWhere,
-} from "typeorm";
 import { subDays, subMonths, startOfDay } from "date-fns";
+import { stories_status_enum } from "@/app/generated/prisma/enums";
 
 export const GET = withErrorHandling(async (req: Request) => {
   const { searchParams } = new URL(req.url);
@@ -21,15 +15,12 @@ export const GET = withErrorHandling(async (req: Request) => {
   const sortBy = searchParams.get("sort") || "newest";
   const timeRange = searchParams.get("time") || "all";
 
-  await initializeDatabase();
-  const story_repo = AppDataSource.getRepository(Story);
-
-  const where: FindOptionsWhere<Story> = {
-    status: StoryStatus.PUBLISHED,
+  const where: any = {
+    status: stories_status_enum.published,
   };
 
   if (topics && topics.length > 0) {
-    where.category = In(topics);
+    where.category = { in: topics };
   }
 
   if (timeRange !== "all") {
@@ -38,37 +29,41 @@ export const GET = withErrorHandling(async (req: Request) => {
     if (timeRange === "week") dateLimit = subDays(new Date(), 7);
     if (timeRange === "month") dateLimit = subMonths(new Date(), 1);
 
-    where.created_at = MoreThanOrEqual(dateLimit);
+    where.created_at = { gte: dateLimit };
   }
 
-  let order: FindOptionsOrder<Story> = { created_at: "DESC" };
-  if (sortBy === "most_viewed") order = { view_count: "DESC" };
-  if (sortBy === "highest_rated") order = { like_count: "DESC" };
+  let orderBy: any = { created_at: "desc" };
+  if (sortBy === "most_viewed") orderBy = { view_count: "desc" };
+  if (sortBy === "highest_rated") orderBy = { like_count: "desc" };
 
-  const [stories, total] = await story_repo.findAndCount({
-    where,
-    relations: ["author"],
-    order,
-    take: limit,
-    skip: skip,
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      featured_image: true,
-      category: true,
-      created_at: true,
-      view_count: true,
-      like_count: true,
-      author: {
+  const [stories, total] = await Promise.all([
+    prisma.stories.findMany({
+      where,
+      take: limit,
+      skip: skip,
+      orderBy,
+      select: {
         id: true,
-        display_name: true,
-        username: true,
-        avatar_url: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        featured_image: true,
+        category: true,
+        created_at: true,
+        view_count: true,
+        like_count: true,
+        author: {
+          select: {
+            id: true,
+            display_name: true,
+            username: true,
+            avatar_url: true,
+          },
+        },
       },
-    },
-  });
+    }),
+    prisma.stories.count({ where }),
+  ]);
 
   const total_pages = Math.ceil(total / limit);
 

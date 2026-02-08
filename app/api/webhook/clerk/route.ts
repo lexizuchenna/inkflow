@@ -2,9 +2,8 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { UserRole } from "@/entities/user.entity";
-import { Email, User } from "@/entities";
+import { prisma } from "@/lib/prisma";
+import { users_role_enum } from "@/app/generated/prisma/client";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -41,10 +40,6 @@ export async function POST(req: Request) {
     return new Response("Error occured", { status: 400 });
   }
 
-  await initializeDatabase();
-  const user_repo = AppDataSource.getRepository(User);
-  const email_repo = AppDataSource.getRepository(Email);
-
   const { id } = evt.data;
   const eventType = evt.type;
 
@@ -53,49 +48,56 @@ export async function POST(req: Request) {
       evt.data;
     const email = email_addresses[0].email_address;
 
-    const existingUser = await user_repo.findOne({
-      where: [{ clerk_id: id }, { email: email }],
+    const existingUser = await prisma.users.findFirst({
+      where: {
+        OR: [{ clerk_id: id }, { email: email }],
+      },
     });
 
     if (existingUser) {
-      console.log(`User ${id} already exists, skipping creation.`);
       return new Response("User already exists", { status: 200 });
     }
 
-    const newUser = user_repo.create({
-      clerk_id: id,
-      email: email,
-      username: username || `user_${Math.random().toString(36).slice(2, 7)}`,
-      display_name: `${first_name || ""} ${last_name || ""}`.trim(),
-      avatar_url: image_url,
-      role: UserRole.WRITER,
-    });
-    const subscriber = email_repo.create({
-      email: newUser.email,
-      is_subscribed: true,
-    });
+    const finalUsername =
+      username || `user_${Math.random().toString(36).slice(2, 7)}`;
 
-    await Promise.all([user_repo.save(newUser), email_repo.save(subscriber)]);
+    await prisma.$transaction([
+      prisma.users.create({
+        data: {
+          clerk_id: id as string,
+          email: email,
+          username: finalUsername,
+          display_name: `${first_name || ""} ${last_name || ""}`.trim(),
+          avatar_url: image_url,
+          role: users_role_enum.writer,
+        },
+      }),
+      prisma.emails.upsert({
+        where: { email },
+        update: { is_subscribed: true },
+        create: { email, is_subscribed: true },
+      }),
+    ]);
   }
 
   if (eventType === "user.updated") {
     const { image_url, first_name, last_name, username } = evt.data;
 
-    await user_repo.update(
-      { clerk_id: id },
-      {
+    await prisma.users.update({
+      where: { clerk_id: id },
+      data: {
         avatar_url: image_url,
         display_name: `${first_name || ""} ${last_name || ""}`.trim(),
         username: username || undefined,
-      }
-    );
-    console.log(`User ${id} updated in DB`);
+      },
+    });
   }
 
   if (eventType === "user.deleted") {
-    await user_repo.delete({ clerk_id: id });
-    console.log(`User ${id} deleted from DB`);
+    await prisma.users.delete({
+      where: { clerk_id: id },
+    });
   }
 
-  return new Response("", { status: 200 });
+  return new Response("Webhook processed", { status: 200 });
 }

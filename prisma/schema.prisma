@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model earnings {
+  id         String               @id(map: "PK_32821f77c2546a1d53f674fe83f") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  amount     Decimal              @default(0) @db.Decimal(12, 2)
+  currency   String               @default("USD") @db.VarChar(3)
+  source     earnings_source_enum @default(article)
+  is_settled Boolean              @default(false)
+  writer_id  String               @db.Uuid
+  story_id   String?              @db.Uuid
+  metadata   Json?
+  created_at DateTime             @default(now()) @db.Timestamp(6)
+  updated_at DateTime             @default(now()) @db.Timestamp(6)
+  stories    stories?             @relation(fields: [story_id], references: [id], onUpdate: NoAction, map: "FK_3cae8cb5ce8220bffa7c8ec0803")
+  author      users                @relation(fields: [writer_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6e5254880ca66989bd8f84e7519")
+
+  @@index([is_settled], map: "IDX_29b41c00fa0a3362c824e799f9")
+  @@index([story_id], map: "IDX_3cae8cb5ce8220bffa7c8ec080")
+  @@index([writer_id], map: "IDX_6e5254880ca66989bd8f84e751")
+}
+
+model emails {
+  id            String   @id(map: "PK_a54dcebef8d05dca7e839749571") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email         String   @unique(map: "UQ_3cbf51004f0706ac67ff8c22dbf") @db.VarChar
+  is_subscribed Boolean  @default(true)
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+}
+
+model payments {
+  id             String               @id(map: "PK_197ab7af18c93fbb0c9b28b4a59") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  amount         Decimal              @db.Decimal(12, 2)
+  currency       String               @default("USD") @db.VarChar(3)
+  status         payments_status_enum @default(pending)
+  transaction_id String?              @unique(map: "UQ_3c324ca49dabde7ffc0ef64675d") @db.VarChar
+  payout_method  String?              @db.VarChar
+  writer_id      String               @db.Uuid
+  processed_at   DateTime?            @default(now()) @db.Timestamp(6)
+  created_at     DateTime             @default(now()) @db.Timestamp(6)
+  author          users                @relation(fields: [writer_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_252ad5bc10ea4dfd3eb88e17513")
+
+  @@index([writer_id], map: "IDX_252ad5bc10ea4dfd3eb88e1751")
+}
+
+model series {
+  id           String    @id(map: "PK_e725676647382eb54540d7128ba") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title        String    @db.VarChar(255)
+  slug         String    @unique(map: "UQ_aabf879e0e06d1b37922d5c9664") @db.VarChar(255)
+  description  String?
+  cover_image  String?
+  is_completed Boolean   @default(false)
+  view_count   Int       @default(0)
+  author_id    String    @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamp(6)
+  updated_at   DateTime  @default(now()) @db.Timestamp(6)
+  author        users     @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_70e33b61f2eba7ca6c5727494d8")
+  stories      stories[]
+
+  @@index([slug], map: "IDX_aabf879e0e06d1b37922d5c966")
+}
+
+model stories {
+  id              String              @id(map: "PK_bb6f880b260ed96c452b32a39f0") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title           String              @db.VarChar(255)
+  slug            String              @unique(map: "UQ_0e45709567c3d81765b64ba1153") @db.VarChar(255)
+  excerpt         String
+  content         String
+  featured_image  String
+  status          stories_status_enum @default(draft)
+  view_count      Int                 @default(0)
+  like_count      Int                 @default(0)
+  reading_time    Int                 @default(0)
+  completion_rate Decimal             @default(0) @db.Decimal(5, 2)
+  author_id       String              @db.Uuid
+  series_id       String?             @db.Uuid
+  order_in_series Int?
+  tags            Json
+  is_featured     Boolean             @default(false)
+  created_at      DateTime            @default(now()) @db.Timestamp(6)
+  updated_at      DateTime            @default(now()) @db.Timestamp(6)
+  category        String              @db.VarChar(255)
+  earnings        earnings[]
+  author           users               @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1e6ca6b1e366a7575873f2d1c30")
+  series          series?             @relation(fields: [series_id], references: [id], onUpdate: NoAction, map: "FK_cbb028a31f278b5f3cba8e21190")
+
+  @@index([slug], map: "IDX_0e45709567c3d81765b64ba115")
+}
+
+model users {
+  id              String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  clerk_id        String          @unique(map: "UQ_bc7be2d54c239f9e1d8a5292117") @db.VarChar
+  username        String          @unique(map: "UQ_fe0bb3f6520ee0469504521e710") @db.VarChar
+  role            users_role_enum @default(writer)
+  display_name    String         @db.VarChar
+  email           String          @unique(map: "UQ_97672ac88f789774dd47f7c8be3") @db.VarChar
+  avatar_url      String?
+  bio             String?
+  is_pro          Boolean         @default(false)
+  follower_count  Int             @default(0)
+  following_count Int             @default(0)
+  created_at      DateTime        @default(now()) @db.Timestamp(6)
+  updated_at      DateTime        @default(now()) @db.Timestamp(6)
+  earnings        earnings[]
+  payments        payments[]
+  series          series[]
+  stories         stories[]
+}
+
+enum earnings_source_enum {
+  article
+  ads
+  tip
+  pro_referral
+}
+
+enum payments_status_enum {
+  pending
+  processing
+  completed
+  failed
+}
+
+enum stories_status_enum {
+  draft
+  published
+  archived
+}
+
+enum users_role_enum {
+  admin
+  writer
+  reader
+}

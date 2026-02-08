@@ -1,9 +1,7 @@
-// src/components/explore/SurpriseButton.tsx
 import { Sparkles, Shuffle } from "lucide-react";
 
 export default function SurpriseButton() {
   const handleRandom = () => {
-    // Logic to fetch a random slug from Supabase and redirect
     console.log("Redirecting to a random masterpiece...");
   };
 

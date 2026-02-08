@@ -1,11 +1,9 @@
-import React from "react";
 import Link from "next/link";
-import { Search, Home, ArrowLeft, BookOpen } from "lucide-react";
+import { Search, Home, BookOpen } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-20 text-center">
-      {/* Visual Element: The Spilled Ink */}
       <div className="relative mb-12">
         <div className="text-[12rem] md:text-[18rem] font-serif font-bold text-foreground/[0.03] leading-none select-none">
           404
@@ -25,7 +23,6 @@ export default function NotFound() {
         </div>
       </div>
 
-      {/* Text Content */}
       <div className="max-w-md space-y-6">
         <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
           The story you're looking for has been{" "}
@@ -36,23 +33,21 @@ export default function NotFound() {
           Either way, this page is currently a blank canvas.
         </p>
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link
             href="/explore"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background dark:bg-paper-50 dark:text-ink-900 rounded-2xl font-bold transition-transform hover:scale-105"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-bg-primary text-background dark:bg-paper-50 dark:text-ink-900 rounded-2xl font-bold transition-transform hover:scale-105"
           >
             <Search size={18} /> Search Stories
           </Link>
           <Link
             href="/"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-border rounded-2xl font-bold hover:bg-foreground/5 transition-colors"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-border rounded-2xl font-bold hover:bg-bg-primary/5 transition-colors"
           >
             <Home size={18} /> Go Home
           </Link>
         </div>
 
-        {/* Helpful Shortcut */}
         <div className="pt-10">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/30 mb-4">
             Try a different path

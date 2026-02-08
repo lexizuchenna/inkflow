@@ -1,5 +1,4 @@
-import { Series, User, Story } from "@/entities";
-
+import type { users, stories } from "@/app/generated/prisma/client";
 export {};
 
 declare global {
@@ -35,27 +34,7 @@ declare global {
 
   export type TimeRange = "today" | "week" | "month" | "all";
 
-  interface BlogPost {
-    title: string;
-    slug: string;
-    excerpt?: string;
-    content: string;
-    featured_image: string;
-    status: "archived" | "published" | "draft";
-    view_count: number;
-    like_count: number;
-    reading_time: number;
-    completion_rate: number;
-    author: User;
-    author_id: string;
-    series?: Series;
-    series_id?: string;
-    order_in_series?: number;
-    tags: Array<string>;
-    is_featured: boolean;
-    created_at: string;
-    updated_at: string;
-  }
+  type BlogPost = Exclude<stories, "id"> & { author: users };
 
   interface ActionModalOptions {
     mode: "default" | "delete" | "info" | "success";
@@ -72,10 +51,17 @@ declare global {
     data?: any;
   }
 
+  interface StoryData extends stories {
+    author: users;
+  }
+
   interface GetStoryResponse {
-    story: Story;
-    series_navigation: { previous: Story | null; next: Story | null } | null;
-    related_posts: Array<Story>;
+    story: StoryData;
+    series_navigation: {
+      previous: StoryData | null;
+      next: StoryData | null;
+    } | null;
+    related_posts: Array<StoryData>;
   }
 
   interface IUser {
@@ -87,9 +73,9 @@ declare global {
   }
 
   interface GetHomeDataRes {
-    featured: Story;
-    top_stories: Array<Story>;
-    trending_stories: Array<Story>;
+    featured: StoryData;
+    top_stories: Array<stories>;
+    trending_stories: Array<stories>;
     top_authors: Array<IUser>;
   }
 

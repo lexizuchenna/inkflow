@@ -1,18 +1,24 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Story, StoryStatus } from "@/entities/story.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
-import { Not } from "typeorm";
+import { stories_status_enum } from "@/app/generated/prisma/client";
 
 export const GET = withErrorHandling(
   async (req: Request, { params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
-    await initializeDatabase();
-    const story_repo = AppDataSource.getRepository(Story);
 
-    const story = await story_repo.findOne({
-      where: { slug, status: StoryStatus.PUBLISHED },
-      relations: ["author", "series"],
+    const story = await prisma.stories.update({
+      where: {
+        slug,
+        status: stories_status_enum.published,
+      },
+      data: {
+        view_count: { increment: 1 },
+      },
+      include: {
+        author: true,
+        series: true,
+      },
     });
 
     if (!story) {
@@ -22,23 +28,22 @@ export const GET = withErrorHandling(
       );
     }
 
-    story.view_count += 1;
-    await story_repo.save(story);
-
     let series_navigation = null;
     if (story.series_id) {
       const [prev, next] = await Promise.all([
-        story_repo.findOne({
+        prisma.stories.findFirst({
           where: {
             series_id: story.series_id,
-            order_in_series: story.order_in_series - 1,
+            order_in_series: (story.order_in_series || 0) - 1,
+            status: stories_status_enum.published,
           },
           select: { id: true, title: true, slug: true },
         }),
-        story_repo.findOne({
+        prisma.stories.findFirst({
           where: {
             series_id: story.series_id,
-            order_in_series: story.order_in_series + 1,
+            order_in_series: (story.order_in_series || 0) + 1,
+            status: stories_status_enum.published,
           },
           select: { id: true, title: true, slug: true },
         }),
@@ -46,22 +51,23 @@ export const GET = withErrorHandling(
       series_navigation = { previous: prev, next: next };
     }
 
-    const related_posts = await story_repo.find({
+    const related_posts = await prisma.stories.findMany({
       where: {
         category: story.category,
-        id: Not(story.id),
-        status: StoryStatus.PUBLISHED,
+        id: { not: story.id },
+        status: stories_status_enum.published,
       },
       take: 3,
-      order: { created_at: "DESC" },
-      relations: ["author"],
+      orderBy: { created_at: "desc" },
       select: {
         id: true,
         title: true,
         slug: true,
         featured_image: true,
         created_at: true,
-        author: { id: true, display_name: true, avatar_url: true },
+        author: {
+          select: { id: true, display_name: true, avatar_url: true },
+        },
       },
     });
 
@@ -69,7 +75,7 @@ export const GET = withErrorHandling(
       statusCode: 200,
       message: "Story retrieved successfully",
       data: {
-        story: { ...story },
+        story,
         series_navigation,
         related_posts,
       },

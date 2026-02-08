@@ -27,6 +27,8 @@ export async function GET(request: Request) {
             fontSize: 24,
             fontWeight: "bold",
             marginBottom: 20,
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           INKFLOW EDITORIAL
@@ -38,12 +40,21 @@ export async function GET(request: Request) {
             color: "white",
             lineHeight: 1.1,
             marginBottom: 40,
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {title}
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 28 }}>
+          <div
+            style={{
+              color: "rgba(255,255,255,0.5)",
+              fontSize: 28,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             by {author}
           </div>
         </div>

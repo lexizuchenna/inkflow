@@ -43,13 +43,10 @@ pnpm install
 
 ### Database & TypeORM
 
-We use **TypeORM** with **PostgreSQL**. If you are adding new features that require data persistence:
+We use **Prisma** with **PostgreSQL**. If you are adding new features that require data persistence:
 
-- **Entities:** Define your entity in `src/entities/`.
 - **Migrations:** Never manually alter the database schema. Generate a migration:
-  ```bash
-  pnpm typeorm migration:generate src/migrations/MigrationName
-  ```
+
 - **Strict Typing:** Ensure all relations and columns are strictly typed. Avoid using `any`.
 
 ### Tech Stack Standards
