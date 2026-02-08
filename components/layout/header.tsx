@@ -29,9 +29,9 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-[100] transition-all duration-300 ${
+      className={`sticky top-0 z-[100] transition-all duration-300 py-3 ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border py-3"
+          ? "bg-bg-secondary border-b border-text-primary"
           : "bg-transparent py-5"
       }`}
     >

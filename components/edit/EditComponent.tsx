@@ -19,7 +19,6 @@ import { useStory } from "@/hooks/user";
 import Tags from "../write/tags";
 
 export default function EditComponent({ slug }: { slug: string }) {
-  const [tagInput, setTagInput] = useState("");
   const [seriesSearch, setSeriesSearch] = useState("");
   const [blogContent, setBlogContent] = useState<BlogPostForm>({
     title: "",
@@ -51,27 +50,6 @@ export default function EditComponent({ slug }: { slug: string }) {
   }, [data]);
 
   const alert = useAlert();
-
-  const addTag = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && tagInput.trim()) {
-      e.preventDefault();
-      if (blogContent.tags.includes(tagInput.trim().toLowerCase())) {
-        return setTagInput("");
-      }
-      setBlogContent((prev) => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim().toLowerCase()],
-      }));
-      setTagInput("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setBlogContent((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((t) => t !== tagToRemove),
-    }));
-  };
 
   const handleAction = async (status: "published" | "draft") => {
     const { title, content, featured_image } = blogContent;

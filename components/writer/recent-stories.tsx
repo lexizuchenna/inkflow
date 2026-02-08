@@ -7,6 +7,7 @@ import { ErrorState } from "../shared/error";
 import { useStories } from "@/hooks/user";
 
 import StoryCard from "./story-card";
+import Link from "next/link";
 
 export default function RecentStories() {
   const { data, isPending, isError, error, refetch } = useStories();
@@ -24,7 +25,10 @@ export default function RecentStories() {
             {data?.pagination?.total_items || 0} Total
           </span>
         </div>
-        <button className="text-[10px] font-bold uppercase tracking-widest text-accent-primary hover:text-white transition-colors cursor-pointer flex items-center gap-2 group">
+        <Link
+          href="/writer/stories"
+          className="text-[10px] font-bold uppercase tracking-widest text-accent-primary hover:text-white transition-colors cursor-pointer flex items-center gap-2 group"
+        >
           View Full Library
           <svg
             width="12"
@@ -37,7 +41,7 @@ export default function RecentStories() {
           >
             <path d="M5 12h14m-7-7 7 7-7 7" />
           </svg>
-        </button>
+        </Link>
       </div>
 
       {/* Story Cards List */}

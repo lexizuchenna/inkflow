@@ -2,12 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 
-import { Story } from "@/entities";
+import { stories } from "@/app/generated/prisma/client";
 
 export default function RelatedArticles({
   related_posts,
 }: {
-  related_posts: Array<Story>;
+  related_posts: Array<stories>;
 }) {
   return (
     <section className="bg-foreground/[0.02] dark:bg-white/[0.02] py-20 border-t border-border">
@@ -42,7 +42,9 @@ export default function RelatedArticles({
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
-                  src={article.featured_image}
+                  src={
+                    article.featured_image ?? "/images/avatar-placeholder.jpg"
+                  }
                   alt={article.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

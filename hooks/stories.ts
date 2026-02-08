@@ -1,4 +1,4 @@
-import { Story } from "@/entities";
+import { stories } from "@/app/generated/prisma/client";
 import { api } from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -9,7 +9,7 @@ interface StoryFilters {
 }
 
 type StoryData = Omit<
-  Story,
+  stories,
   | "content"
   | "status"
   | "completion_rate"

@@ -56,12 +56,12 @@
   /* Applying the new text variables to your prose */
   .prose-inkflow {
     & p {
-      @apply !leading-[1.8] text-[var(--color-text-secondary)];
+      @apply !leading-[1.8] !text-[var(--color-text-secondary)];
     }
 
     & h2,
     & h3 {
-      @apply !font-serif text-[var(--color-text-primary)];
+      @apply !font-serif !text-[var(--color-text-primary)];
       @apply !mt-16 !mb-8 !scroll-mt-32;
     }
 
@@ -72,7 +72,7 @@
     & blockquote {
       @apply !border-l-4 !border-accent-primary;
       @apply !bg-accent-primary/5 !px-6 !py-2 !italic !font-serif !text-2xl;
-      @apply !rounded-r-2xl !my-12 text-[var(--color-text-primary)];
+      @apply !rounded-r-2xl !my-12 !text-[var(--color-text-primary)];
     }
 
     /* Utility for cards using the secondary background */

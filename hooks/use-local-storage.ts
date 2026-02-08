@@ -1,8 +1,6 @@
-// src/hooks/useLocalStorage.ts
 import { useState, useEffect } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
-  // 1. Initialize state with value from localStorage or initialValue
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") return initialValue;
     try {
@@ -14,7 +12,6 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   });
 
-  // 2. Update localStorage whenever the state changes
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {

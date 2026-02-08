@@ -22,12 +22,16 @@ export default function Tags({ blogContent, setBlogContent }: TagProps) {
     ) {
       e.preventDefault();
 
-      if (blogContent.tags.includes(tagInput.trim().toLowerCase())) {
+      if (
+        (blogContent.tags as Array<string>).includes(
+          tagInput.trim().toLowerCase()
+        )
+      ) {
         return setTagInput("");
       }
       setBlogContent((prev) => ({
         ...prev,
-        tags: [...prev.tags, tagInput.trim().toLowerCase()],
+        tags: [...(prev.tags as Array<string>), tagInput.trim().toLowerCase()],
       }));
       setTagInput("");
     }
@@ -36,7 +40,7 @@ export default function Tags({ blogContent, setBlogContent }: TagProps) {
   const removeTag = (tagToRemove: string) => {
     setBlogContent((prev) => ({
       ...prev,
-      tags: prev.tags.filter((t) => t !== tagToRemove),
+      tags: (prev.tags as Array<string>).filter((t) => t !== tagToRemove),
     }));
   };
   return (
@@ -62,7 +66,7 @@ export default function Tags({ blogContent, setBlogContent }: TagProps) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {blogContent.tags.map((tag) => (
+        {(blogContent.tags as Array<string>).map((tag) => (
           <span
             key={tag}
             className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 bg-accent-primary/5 border border-accent-primary/10 text-accent-primary rounded-full text-[11px] font-bold transition-all hover:bg-accent-primary/10 group"

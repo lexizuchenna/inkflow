@@ -96,7 +96,10 @@ export default function JoinCommunity() {
             </p>
           </div>
 
-          <form className="relative z-10 space-y-3">
+          <form
+            className="relative z-10 space-y-3"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="email"
               required
@@ -107,7 +110,7 @@ export default function JoinCommunity() {
             />
             <button
               type="button"
-              className="cursor-pointer w-full bg-white text-accent-primary font-bold py-4 rounded-2xl hover:bg-paper-50 transition-colors shadow-xl shadow-black/5 active:scale-95 transition-transform disabled:cursor-not-allowed disabled:bg-white/50 flex items-center justify-center"
+              className="cursor-pointer w-full bg-white text-accent-primary font-bold py-4 rounded-2xl hover:bg-paper-50 shadow-xl shadow-black/5 active:scale-95 transition-transform disabled:cursor-not-allowed disabled:bg-white/50 flex items-center justify-center"
               disabled={!email.trim() || !verify_email.test(email)}
               onClick={() => submitForm.mutate()}
             >

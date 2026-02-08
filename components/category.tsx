@@ -1,4 +1,3 @@
-// src/components/home/CategoryBar.tsx
 "use client";
 
 import React, { useRef } from "react";

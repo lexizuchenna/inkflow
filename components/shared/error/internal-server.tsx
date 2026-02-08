@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { RefreshCcw, Home, Send, Bug } from "lucide-react";
+import { useAlert } from "@/providers/alert";
 
 interface ErrorProps {
   error?: any;
@@ -9,10 +10,10 @@ interface ErrorProps {
 }
 
 export default function InternalServerError({ error, reset }: ErrorProps) {
+  const alert = useAlert();
   const handleReportError = () => {
-    // Logic to send 'error' data to your logging service (e.g., Sentry, LogRocket)
     console.log("Reporting diagnostic data:", error);
-    alert(
+    alert.error(
       "Error data sent to the InkFlow technical team. Thank you for your patience."
     );
   };
@@ -54,14 +55,14 @@ export default function InternalServerError({ error, reset }: ErrorProps) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button
             onClick={() => (reset ? reset() : window.location.reload())}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background dark:bg-white dark:text-black rounded-2xl font-bold transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-foreground/10"
+            className="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-bg-primary text-background dark:bg-white dark:text-black rounded-2xl font-bold transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-foreground/10"
           >
             <RefreshCcw size={18} /> Refresh Page
           </button>
 
           <button
             onClick={handleReportError}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-border rounded-2xl font-bold hover:bg-red-500/5 hover:border-red-500/20 hover:text-red-500 transition-all active:scale-95"
+            className="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-border rounded-2xl font-bold hover:bg-red-500/5 hover:border-red-500/20 hover:text-red-500 transition-all active:scale-95"
           >
             <Send size={18} /> Report Issue
           </button>
@@ -74,7 +75,7 @@ export default function InternalServerError({ error, reset }: ErrorProps) {
               <summary className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/20 group-hover:text-foreground/40 transition-colors list-none">
                 View Technical Manuscript
               </summary>
-              <div className="mt-4 p-4 bg-foreground/[0.02] border border-border rounded-xl text-left overflow-auto max-h-40">
+              <div className="mt-4 p-4 bg-bg-primary/[0.02] border border-border rounded-xl text-left overflow-auto max-h-40">
                 <code className="text-[10px] text-red-400 font-mono leading-tight whitespace-pre-wrap">
                   {JSON.stringify(error, null, 2)}
                 </code>

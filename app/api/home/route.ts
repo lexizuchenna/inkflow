@@ -1,50 +1,66 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Story, StoryStatus } from "@/entities/story.entity";
-import { User } from "@/entities/user.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
+import { stories_status_enum } from "@/app/generated/prisma/client";
 
 export const GET = withErrorHandling(async () => {
-  await initializeDatabase();
-  const storyRepo = AppDataSource.getRepository(Story);
-  const userRepo = AppDataSource.getRepository(User);
+  const [
+    featured_story,
+    top_stories,
+    trending_stories,
+    top_authors_aggregation,
+  ] = await Promise.all([
+    prisma.stories.findFirst({
+      where: { status: stories_status_enum.published },
+      orderBy: [{ view_count: "desc" }, { created_at: "desc" }],
+      include: { author: true },
+    }),
 
-  const featured_story = await storyRepo.findOne({
-    where: { status: StoryStatus.PUBLISHED },
-    order: { view_count: "DESC", created_at: "DESC" },
-    relations: ["author"],
-  });
+    prisma.stories.findMany({
+      where: { status: stories_status_enum.published },
+      orderBy: { view_count: "desc" },
+      take: 3,
+      include: { author: true },
+    }),
 
-  const top_stories = await storyRepo.find({
-    where: { status: StoryStatus.PUBLISHED },
-    order: { view_count: "DESC" },
-    take: 3,
-    relations: ["author"],
-  });
+    prisma.stories.findMany({
+      where: { status: stories_status_enum.published },
+      orderBy: [{ created_at: "desc" }, { view_count: "desc" }],
+      take: 5,
+      include: { author: true },
+    }),
 
-  const trending_stories = await storyRepo.find({
-    where: { status: StoryStatus.PUBLISHED },
-    order: { created_at: "DESC", view_count: "DESC" },
-    take: 5,
-    relations: ["author"],
-  });
+    prisma.stories.groupBy({
+      by: ["author_id"],
+      where: { status: stories_status_enum.published },
+      _sum: { view_count: true },
+      orderBy: {
+        _sum: {
+          view_count: "desc",
+        },
+      },
+      take: 3,
+    }),
+  ]);
 
-  const top_authors = await userRepo
-    .createQueryBuilder("user")
-    .leftJoin("user.stories", "story")
-    .select([
-      "user.id",
-      "user.display_name",
-      "user.username",
-      "user.avatar_url",
-      "user.role",
-    ])
-    .addSelect("SUM(story.view_count)", "total_views")
-    .where("story.status = :status", { status: StoryStatus.PUBLISHED })
-    .groupBy("user.id")
-    .orderBy("total_views", "DESC")
-    .take(3)
-    .getMany();
+  const top_authors = await Promise.all(
+    top_authors_aggregation.map(async (agg) => {
+      const user = await prisma.users.findUnique({
+        where: { id: agg.author_id },
+        select: {
+          id: true,
+          display_name: true,
+          username: true,
+          avatar_url: true,
+          role: true,
+        },
+      });
+      return {
+        ...user,
+        total_views: agg._sum.view_count || 0,
+      };
+    })
+  );
 
   return NextResponse.json({
     statusCode: 200,

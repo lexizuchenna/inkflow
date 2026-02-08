@@ -1,11 +1,9 @@
-import { ArrowUpRight, Clock, User } from "lucide-react";
+import { ArrowUpRight, Clock } from "lucide-react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
 
-import { Story } from "@/entities";
-
-export default function Hero(story: Story) {
+export default function Hero(story: StoryData) {
   return (
     <section className="relative pt-8 pb-16 lg:pt-12 lg:pb-24">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

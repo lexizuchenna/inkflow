@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.8",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
     "@radix-ui/react-popover": "^1.1.15",
     "@supabase/supabase-js": "^2.90.1",
     "@tailwindcss/typography": "^0.5.19",
@@ -57,6 +59,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "nodemailer": "^8.0.0",
+    "prisma": "^7.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

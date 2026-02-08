@@ -1,20 +1,19 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { DASHBOARD_NAV } from "@/constants/dashboard";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/user";
-import { ErrorState } from "../shared/error";
 import { AsideSkeleton } from "./skeleton/aside";
 
 export default function Aside() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isPending, isError, error, refetch } = useUser();
+  const { data, isPending } = useUser();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -32,16 +31,16 @@ export default function Aside() {
                 className="h-10 w-10 rounded-full object-cover border border-border shadow-lg"
               />
             ) : (
-              <div className="h-10 w-10 rounded-full bg-accent-primary flex items-center justify-center text-white font-serif font-bold text-xl shadow-lg shadow-accent-primary/20">
-                {data?.username?.charAt(0).toUpperCase() || "U"}
+              <div className="h-10 w-10 rounded-full bg-accent-primary flex items-center justify-center text-text-primary font-serif font-bold text-xl shadow-lg shadow-accent-primary/20">
+                {data?.username?.charAt(0).toUpperCase() || "I"}
               </div>
             )}
             <div className="overflow-hidden">
-              <p className="text-sm font-bold text-white truncate">
-                {data?.display_name || data?.username}
+              <p className="text-sm font-bold text-text-primary truncate">
+                {data?.display_name || "Inkflow User"}
               </p>
               <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">
-                {data?.role}
+                {data?.role || "inkflow"}
               </p>
             </div>
           </div>
@@ -70,7 +69,7 @@ export default function Aside() {
                       "w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 group cursor-pointer",
                       isActive
                         ? "bg-bg-secondary text-background shadow-xl shadow-bg-secondary/5"
-                        : "text-text-secondary/50 hover:text-white hover:bg-bg-secondary/5"
+                        : "text-text-secondary/50 hover:text-text-primary hover:bg-bg-secondary/5"
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -106,7 +105,7 @@ export default function Aside() {
                 <p className="text-[10px] font-bold uppercase tracking-widest text-accent-primary">
                   Total Stories
                 </p>
-                <span className="text-[10px] font-bold text-white">
+                <span className="text-[10px] font-bold text-text-primary">
                   {data?.stories?.length || 0}
                 </span>
               </div>
@@ -131,7 +130,7 @@ export default function Aside() {
     );
   };
 
-  if (isError) return <ErrorState error={error} onRetry={refetch} />;
+  // if (isError) return <ErrorState error={error} onRetry={refetch} />;
 
   return (
     <>

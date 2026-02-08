@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 import send_mail from "@/lib/nodemailer";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Email } from "@/entities/email.entity";
+import { prisma } from "@/lib/prisma";
 import { withErrorHandling } from "@/lib/api-handler";
 import { newsletter_email } from "@/templates/newsletter";
 import { ConflictException, InternalServerException } from "@/exceptions";
@@ -21,15 +20,13 @@ export const POST = withErrorHandling(async (req: Request) => {
     );
   }
 
-  await initializeDatabase();
-  const emailRepo = AppDataSource.getRepository(Email);
-
-  const existingEmail = await emailRepo.findOne({
+  const existingEmail = await prisma.emails.findUnique({
     where: { email: normalizedEmail },
   });
 
-  if (existingEmail && existingEmail.is_subscribed)
+  if (existingEmail && existingEmail.is_subscribed) {
     throw new ConflictException("You are already subscribed to inkflow");
+  }
 
   const token = jwt.sign({ email: normalizedEmail }, JWT_SECRET, {
     expiresIn: "24h",
@@ -40,12 +37,14 @@ export const POST = withErrorHandling(async (req: Request) => {
   const { status, error } = await send_mail({
     to: email,
     html: newsletter_email({ verification_url }),
+    subject: "SUBSCRIBE TO INKFLOW",
   });
 
-  if (status !== 200)
+  if (status !== 200) {
     throw new InternalServerException(
       error?.message || "Something went wrong, try again"
     );
+  }
 
   return NextResponse.json({
     statusCode: 200,

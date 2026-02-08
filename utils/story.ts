@@ -1,7 +1,6 @@
 import slugify from "slugify";
 import { JSDOM } from "jsdom";
-
-import { StoryStatus } from "@/entities/story.entity";
+import { stories_status_enum } from "@/app/generated/prisma/enums";
 
 export const validateStoryData = (data: any) => {
   const errors: string[] = [];
@@ -22,7 +21,7 @@ export const validateStoryData = (data: any) => {
 
   if (!data.status) {
     errors.push("Status is required (draft, published, or archived).");
-  } else if (!Object.values(StoryStatus).includes(data.status)) {
+  } else if (!Object.values(stories_status_enum).includes(data.status)) {
     errors.push("Invalid status type provided.");
   }
 
@@ -37,7 +36,7 @@ export const validateStoryData = (data: any) => {
       title: data.title?.trim() || "",
       content: data.content || "",
       category: data.category || "Technology",
-      status: data.status || StoryStatus.DRAFT,
+      status: data.status || stories_status_enum.draft,
       featured_image: data.featured_image || "",
       tags: Array.isArray(data.tags) ? data.tags : [],
       slug: data.title ? generateSlug(data.title) : "",

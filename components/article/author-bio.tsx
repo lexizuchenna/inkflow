@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Twitter, Globe, ShieldCheck } from "lucide-react";
+import { users } from "@/app/generated/prisma/client";
 
 interface AuthorBioProps {
   author: {
     display_name: string;
-    avatar_url?: string;
+    avatar_url?: users["avatar_url"];
     role: string;
-    bio?: string;
+    bio?: users["bio"];
     username: string;
     socials?: {
       twitter?: string;

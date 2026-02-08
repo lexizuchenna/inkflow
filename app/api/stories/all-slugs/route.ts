@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
-import { AppDataSource, initializeDatabase } from "@/lib/db";
-import { Story, StoryStatus } from "@/entities/story.entity";
+import { prisma } from "@/lib/prisma";
+import { stories_status_enum } from "@/app/generated/prisma/enums";
 
 export async function GET() {
-  await initializeDatabase();
-  const storyRepo = AppDataSource.getRepository(Story);
-
-  const stories = await storyRepo.find({
-    where: { status: StoryStatus.PUBLISHED },
-    select: ["slug", "updated_at"],
-    order: { updated_at: "DESC" },
+  const stories = await prisma.stories.findMany({
+    where: { status: stories_status_enum.published },
+    select: { title: true, slug: true },
+    orderBy: { updated_at: "desc" },
   });
 
   return NextResponse.json({ data: stories });

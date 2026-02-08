@@ -1,21 +1,22 @@
 "use client";
 
+import React, { useRef } from "react";
+import Link from "next/link";
+import dayjs from "dayjs";
+
 import { Eye, Calendar, BarChart2, Trash2, Edit3, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
-import React, { useRef } from "react";
 import { useAlert } from "@/providers/alert";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { storyService } from "@/services/story";
-import { Story } from "@/entities";
 import ActionModal from "../shared/action-modal";
-import Link from "next/link";
-import dayjs from "dayjs";
+import { stories } from "@/app/generated/prisma/client";
 
 export default function StoryCard({
   story,
   page = 1,
 }: {
-  story: Story;
+  story: stories;
   page?: number;
 }) {
   const deleteRef = useRef<{ open: (options: ActionModalOptions) => void }>(
@@ -32,7 +33,7 @@ export default function StoryCard({
     onSuccess: (data) => {
       queryClient.setQueryData(
         ["user-stories", 1],
-        (oldData: { stories: Array<Story> }) => {
+        (oldData: { stories: Array<stories> }) => {
           console.log("old", oldData);
           if (!oldData) return oldData;
 
@@ -53,7 +54,7 @@ export default function StoryCard({
     onSuccess: (data) => {
       queryClient.setQueryData(
         ["user-stories"],
-        (oldData: { stories: Array<Story> }) => {
+        (oldData: { stories: Array<stories> }) => {
           console.log("old", oldData);
           if (!oldData) return oldData;
 
@@ -118,7 +119,8 @@ export default function StoryCard({
               </span>
               <span className="hidden sm:block h-1 w-1 rounded-full bg-border" />
               <span className="flex items-center gap-1.5 whitespace-nowrap">
-                <BarChart2 size={12} /> {story.completion_rate} Completion
+                <BarChart2 size={12} /> {Number(story.completion_rate)}{" "}
+                Completion
               </span>
             </div>
           </div>

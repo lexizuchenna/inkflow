@@ -53,7 +53,7 @@ export default function ErrorState({
     >
       <div className="relative mb-8">
         <div className="absolute inset-0 bg-accent-primary/20 blur-3xl rounded-full" />
-        <div className="relative flex items-center justify-center w-20 h-20 rounded-[2rem] bg-background border border-border shadow-xl">
+        <div className="relative flex items-center justify-center w-20 h-20 rounded-[2rem] bg-bg-secondary border border-border shadow-xl">
           {isNetwork ? (
             <WifiOff className="w-10 h-10 text-accent-primary" />
           ) : (
@@ -74,7 +74,7 @@ export default function ErrorState({
       {onRetry && (
         <button
           onClick={onRetry}
-          className="mt-10 group flex items-center gap-3 bg-foreground text-background dark:bg-white dark:text-black px-8 py-4 rounded-2xl text-sm font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          className="mt-10 group flex items-center gap-3 bg-bg-primary text-background dark:bg-white dark:text-black px-8 py-4 rounded-2xl text-sm font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
         >
           <RefreshCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           Try Again
