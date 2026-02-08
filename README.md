@@ -2,11 +2,11 @@
 
 ## Overview
 
-InkFlow is a professional content publishing engine built with a TypeScript-based Node.js environment utilizing the Next.js 15 App Router for server-side logic and TypeORM for robust PostgreSQL database management. It handles complex editorial workflows, user analytics, and high-performance content delivery.
+InkFlow is a professional content publishing engine built with a TypeScript-based Node.js environment utilizing the Next.js 15 App Router for server-side logic and Prisma for robust PostgreSQL database management. It handles complex editorial workflows, user analytics, and high-performance content delivery.
 
 ## Features
 
-- **TypeORM**: Object-relational mapping for PostgreSQL with strictly typed entities (User, Story, Series, Earning, Payment).
+- **Prisma**: Object-relational mapping for PostgreSQL with strictly typed models (User, Story, Series, Earning, Payment).
 - **Clerk Auth**: Secure identity management and session protection for writer and reader roles.
 - **Supabase Storage**: Integrated file upload system for high-resolution featured images and assets.
 - **Tiptap Editor**: Rich-text content processing with custom extensions for editorial-grade publishing.
@@ -296,7 +296,7 @@ Query Parameter: `q`
 | TypeScript | Language               |
 | Node.js    | Runtime                |
 | Next.js    | Server & API Framework |
-| TypeORM    | Database ORM           |
+| Prisma     | Database ORM           |
 | PostgreSQL | Database               |
 | Supabase   | File Storage           |
 | Clerk      | Authentication         |
