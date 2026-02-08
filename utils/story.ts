@@ -1,5 +1,5 @@
 import slugify from "slugify";
-// import { JSDOM } from "jsdom";
+import * as cheerio from "cheerio";
 import { stories_status_enum } from "@/app/generated/prisma/enums";
 
 export const validateStoryData = (data: any) => {
@@ -55,28 +55,21 @@ const generateSlug = (text: string): string => {
     .substring(0, 200);
 };
 
-export const assignHeadingIds = async (content: string): Promise<string> => {
-  let doc: Document;
+export const assignHeadingIds = (content: string): string => {
+  const $ = cheerio.load(content, null, false);
 
-  if (typeof window === "undefined") {
-    const { JSDOM } = await import("jsdom");
-    doc = new JSDOM(content).window.document;
-  } else {
-    const parser = new DOMParser();
-    doc = parser.parseFromString(content, "text/html");
-  }
+  const headings = $("h2, h3");
 
-  const headings = doc.querySelectorAll("h2, h3");
-
-  headings.forEach((heading) => {
-    const text = heading.textContent || "";
-
+  // 3. Iterate and assign IDs
+  headings.each((_, element) => {
+    const $heading = $(element);
+    const text = $heading.text() || "";
     const slug = slugify(text);
 
     if (slug) {
-      heading.id = slug;
+      $heading.attr("id", slug);
     }
   });
 
-  return doc.body.innerHTML;
+  return $.html();
 };
