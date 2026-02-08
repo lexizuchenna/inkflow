@@ -7,13 +7,17 @@ interface StorySitemapItem {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const NEXT_PUBLIC_APP_URL =
-    process.env.NEXT_PUBLIC_APP_URL || "https://inkflow.com";
+  const NEXT_PUBLIC_APP_URL = "https://x-inkflow.vercel.app";
+  // process.env.NEXT_PUBLIC_APP_URL || ;
 
   let storyEntries: MetadataRoute.Sitemap = [];
 
   try {
-    const { data } = await api.get("/stories/all-slugs");
+    const { data } = await api.get("/stories/all-slugs", {
+      baseURL: NEXT_PUBLIC_APP_URL,
+    });
+
+    console.log(data);
 
     storyEntries = data.data.map((story: StorySitemapItem) => ({
       url: `${NEXT_PUBLIC_APP_URL}/stories/${story.slug}`,

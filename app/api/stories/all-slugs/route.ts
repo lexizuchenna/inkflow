@@ -5,7 +5,7 @@ import { stories_status_enum } from "@/app/generated/prisma/enums";
 export async function GET() {
   const stories = await prisma.stories.findMany({
     where: { status: stories_status_enum.published },
-    select: { title: true, slug: true },
+    select: { updated_at: true, slug: true },
     orderBy: { updated_at: "desc" },
   });
 
